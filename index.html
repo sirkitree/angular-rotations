@@ -4,20 +4,17 @@
     <title>Basic Rotation animation | A-Frame</title>
     <meta name="description" content="Basic Rotation animation | A-Frame">
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script>
   </head>
   <body>
     <a-scene>
-      <a-entity>
+        
+      <!-- change "to" values (place 360 in x or y) to change the plane on which it rotates -->
+      <a-entity id="mars-parent" animation="property: rotation; dir: alternate; dur: 5000; easing: linear; loop: true; to: 0 0 360">
+        
         <!-- change x coord on position to change the radius of the rotation -->
         <a-sphere id="mars" position="15 1.25 0" radius="1" color="#EF2D5E" shadow></a-sphere>  
-        
-        <!-- change "to" values (place 360 in x or y) to change the plane on which it rotates -->
-        <a-animation attribute="rotation"
-          dur="5000"
-          direction="reverse"
-          easing="linear"
-          to="0 0 360"
-          repeat="indefinite"></a-animation>
+      
       </a-entity>
       
       <a-box color="tomato" depth="4" height="4" width="4"></a-box>
@@ -31,14 +28,12 @@
       // it's not recommeded to put script here
       // @todo: move this to a component (https://aframe.io/docs/0.7.0/introduction/writing-a-component.html)
       var sceneEl = document.querySelector('a-scene');
-      var mars = sceneEl.querySelector('#mars');
-      var marsAnimation = sceneEl.querySelector('a-animation');
+      var marsParent = sceneEl.querySelector('#mars-parent');
       
-      console.log(marsAnimation); //logs the element
+      console.log(marsParent); //logs the element
       
-      // animation isn't taking updates
-      // @todo: try https://github.com/ngokevin/aframe-animation-component
-      marsAnimation.setAttribute('direction', 'normal');
+      // this updates the direction to normal instead of alternate
+      marsParent.setAttribute('animation', 'dir', 'normal');
       
     </script>
   </body>
