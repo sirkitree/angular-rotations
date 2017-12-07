@@ -11,15 +11,12 @@
         
       <!-- change "to" values (place 360 in x or y) to change the plane on which it rotates -->
       <a-entity id="mars-parent" animation="property: rotation; dir: alternate; dur: 5000; easing: linear; loop: true; to: 0 0 360">
-        
-        <!-- change x coord on position to change the radius of the rotation -->
-        <a-sphere id="mars" position="15 1.25 0" radius="1" color="#EF2D5E" shadow></a-sphere>  
       
       </a-entity>
       
       <a-box color="tomato" depth="4" height="4" width="4"></a-box>
       <a-sky color="#ECECEC"></a-sky>
-      <a-entity position="0 0 25">
+      <a-entity id="camera-parent" position="0 0 25">
         <a-camera></a-camera>
       </a-entity>
     </a-scene>
@@ -30,10 +27,61 @@
       var sceneEl = document.querySelector('a-scene');
       var marsParent = sceneEl.querySelector('#mars-parent');
       
-      console.log(marsParent); //logs the element
+      // here are some planets we'll add dynamically to the scene
+      var planets = {
+	      sun: "#feb400",
+        moon: "#b2b2b2",
+        mercury: "#abc600",
+        venus: "#00ccce",
+        mars: "#be0000",
+        jupiter: "#0000cb",
+        saturn: "#a28868",
+        chiron: "#666666",
+        uranus: "#bc00ca",
+        neptune: "#116f43",
+        pluto: "#6b0000",
+        ascendant: "#000000",
+        midheaven: "#000000"
+      };
+      var planetTotal = 13; // can't count objects easily
+      var i = 0; // keep track of index
       
-      // this updates the direction to normal instead of alternate
+      for (key in planets) {
+        i = i+1; // increment index to pass to drawPoints()
+        
+        var coords = drawPoint(1, i, planetTotal);
+        var pos = Math.round(coords[0])/8 +' '+ Math.round(coords[1])/8 + ' 0';
+        //console.log(pos);
+        
+        // create a new sphere element for each planet
+        var planetEl = document.createElement('a-sphere');
+        planetEl.setAttribute('id', key);
+        planetEl.setAttribute('color', planets[key]);
+        planetEl.setAttribute('radius', 1);
+        planetEl.setAttribute('position', pos);
+        //console.log(planetEl);
+        
+        // @todo: each of these will need it's own parent in which to apply their own rotations
+        //        so that they can rotate independently of one another
+        marsParent.appendChild(planetEl);
+      }
+      
+      //console.log(marsParent); //logs the element
+      
+      // this updates the direction to normal instead of alternate (ex of changing animation attributes)
       marsParent.setAttribute('animation', 'dir', 'normal');
+      
+      // Function to calculate a point on a radius.
+      //   takes the radius, an index for the currentPoint, and the total number of points
+      //   returns the x and z coordinates of this particular index on a point of the radius
+      function drawPoint(r, currentPoint, totalPoints) {
+          var theta = ((Math.PI*2) / totalPoints);
+          var angle = (theta * currentPoint);
+          var x = (100 * Math.cos(angle));
+          var z = (100 * Math.sin(angle));
+        console.log(r, currentPoint, totalPoints);
+          return [x, z];
+      }
       
     </script>
   </body>
