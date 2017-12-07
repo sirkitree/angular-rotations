@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic Rotation animation | A-Frame</title>
+    <meta name="description" content="Basic Rotation animation | A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity>
+        <!-- change x coord on position to change the radius of the rotation -->
+        <a-sphere id="mars" position="15 1.25 0" radius="1" color="#EF2D5E" shadow></a-sphere>  
+        
+        <!-- change "to" values (place 360 in x or y) to change the plane on which it rotates -->
+        <a-animation attribute="rotation"
+          dur="5000"
+          direction="reverse"
+          easing="linear"
+          to="0 0 360"
+          repeat="indefinite"></a-animation>
+      </a-entity>
+      
+      <a-box color="tomato" depth="4" height="4" width="4"></a-box>
+      <a-sky color="#ECECEC"></a-sky>
+      <a-entity position="0 0 25">
+        <a-camera></a-camera>
+      </a-entity>
+    </a-scene>
+    
+    <script>
+      // it's not recommeded to put script here
+      // @todo: move this to a component (https://aframe.io/docs/0.7.0/introduction/writing-a-component.html)
+      var sceneEl = document.querySelector('a-scene');
+      var mars = sceneEl.querySelector('#mars');
+      var marsAnimation = sceneEl.querySelector('a-animation');
+      
+      console.log(marsAnimation); //logs the element
+      
+      // animation isn't taking updates
+      // @todo: try https://github.com/ngokevin/aframe-animation-component
+      marsAnimation.setAttribute('direction', 'normal');
+      
+    </script>
+  </body>
+</html>
